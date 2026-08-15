@@ -1,0 +1,106 @@
+.admin-section-title {
+    max-width: 1200px;
+    margin: 30px auto 15px;
+    padding: 0 30px;
+    color: var(--saylani-blue);
+    font-weight: 700;
+}
+
+.pending-card {
+    background: var(--white);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.07);
+}
+
+.pending-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    background: var(--gray-light);
+}
+
+.pending-card-body {
+    padding: 15px;
+}
+
+.pending-card-body h5 {
+    font-weight: 700;
+    margin-bottom: 4px;
+}
+
+.pending-card-body p {
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+.pending-type-tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 50px;
+    color: white;
+    margin-bottom: 8px;
+}
+
+.pending-type-tag.lost { background: #e63946; }
+.pending-type-tag.found { background: var(--saylani-green); }
+
+.action-btns {
+    display: flex;
+    gap: 8px;
+}
+
+.approve-btn, .reject-btn {
+    flex: 1;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+}
+
+.approve-btn { background: var(--saylani-green); }
+.reject-btn { background: #e63946; }
+
+.table-wrapper {
+    max-width: 1200px;
+    margin: 0 auto 40px;
+    padding: 0 30px;
+    overflow-x: auto;
+}
+
+.admin-table {
+    width: 100%;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    border-collapse: collapse;
+}
+
+.admin-table th, .admin-table td {
+    padding: 12px 15px;
+    text-align: left;
+    font-size: 13px;
+    border-bottom: 1px solid #eee;
+}
+
+.admin-table th {
+    background: var(--gray-light);
+    color: var(--text-dark);
+}
+
+.delete-btn {
+    background: #e63946;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    cursor: pointer;
+}

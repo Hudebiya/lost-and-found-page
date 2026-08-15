@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Lost & Found Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="dashboard.css">
+</head>
+
+<body class="dashboard-page">
+ <header class="dash-hero">
+    <nav class="dash-navbar">
+        <div class="dash-logo">
+            <img src="assets/logo.png" width="140px" alt="">
+        </div>
+        <div class="dash-nav-actions">
+            <span id="welcomeText" class="welcome-pill"></span>
+            <a href="report.html" class="btn-action btn-sm-action"><i class="fas fa-plus"></i> Report Item</a>
+            <button class="btn-ghost-dark" id="logoutBtn">Logout</button>
+        </div>
+    </nav>
+
+   
+        <h1>Browse Lost &amp; Found Items</h1>
+        <p>Help reunite people with their belongings</p>
+    </header>
+
+    <div class="filter-tabs">
+        <button class="filter-btn active" data-filter="all"><i class="fas fa-border-all"></i> All</button>
+        <button class="filter-btn" data-filter="lost"><i class="fas fa-search"></i> Lost</button>
+        <button class="filter-btn" data-filter="found"><i class="fas fa-hand-holding"></i> Found</button>
+        <button class="filter-btn" data-filter="resolved"><i class="fas fa-check-circle"></i> Resolved</button>
+    </div>
+
+    <div class="items-grid" id="itemsGrid">
+        <p class="loading-text" id="loadingText"><i class="fas fa-spinner fa-spin"></i> Loading items...</p>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="supabase.js"></script>
+    <script src="dashboard.js"></script>
+</body>
+
+</html>

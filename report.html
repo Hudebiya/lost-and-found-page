@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report an Item - Lost & Found Portal</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="report.css">
+</head>
+
+<body class="report-page">
+
+    <div class="report-card">
+        <h2 class="fw-bold">Report an Item</h2>
+
+        <form id="reportForm">
+
+            <!-- Image uploader with + icon -->
+            <div class="image-upload-wrapper">
+                <div class="image-upload-box" id="imageUploadBox">
+                    <i class="fas fa-plus plus-icon"></i>
+                    <span class="upload-label">Add Photo</span>
+                    <img src="" alt="preview" class="preview-img" id="previewImg">
+                    <button type="button" class="remove-img-btn" id="removeImgBtn">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <input type="file" id="imageInput" accept="image/*">
+            </div>
+
+            <!-- Lost / Found toggle -->
+            <div class="status-toggle">
+                <input type="radio" id="statusLost" name="itemStatus" value="lost" checked>
+                <label for="statusLost"><i class="fas fa-search"></i> Lost</label>
+
+                <input type="radio" id="statusFound" name="itemStatus" value="found">
+                <label for="statusFound"><i class="fas fa-hand-holding"></i> Found</label>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Item Title</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-tag"></i>
+                    <input type="text" id="itemTitle" placeholder="e.g. Black Wallet" required>
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Description</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-align-left"></i>
+                    <textarea id="itemDescription" placeholder="Describe the item, where it was lost/found, any identifying details..." required></textarea>
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Location</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <input type="text" id="itemLocation" placeholder="e.g. Main Cafeteria, Block A" required>
+                </div>
+            </div>
+
+            <div class="form-group-custom">
+                <label>Contact Info</label>
+                <div class="input-group-custom">
+                    <i class="fas fa-phone"></i>
+                    <input type="text" id="itemContact" placeholder="Phone or Email" required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-action mt-3 w-100" id="submitBtn">Submit Report</button>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="supabase.js"></script>
+    <script src="report.js"></script>
+</body>
+
+</html>
