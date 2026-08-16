@@ -65,7 +65,13 @@ reportForm.addEventListener('submit', async (e) => {
     Swal.fire({ title: 'Submitting report...', didOpen: () => Swal.showLoading(), allowOutsideClick: false });
 
     // Get current logged-in user (so we know who reported it)
-    const { data: { user } } = await supabaseClient.auth.getUser();
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+
+    if (userError) {
+        Swal.fire('Connection Error', `Could not verify login: ${userError.message}`, 'error');
+        submitBtn.disabled = false;
+        return;
+    }
 
     if (!user) {
         Swal.fire('Error', 'You must be logged in to report an item.', 'error');
@@ -100,6 +106,7 @@ reportForm.addEventListener('submit', async (e) => {
         imageUrl = publicUrlData.publicUrl;
     }
 
+    // 2. Insert the item into the "items" table
     const { error: insertError } = await supabaseClient
         .from('items')
         .insert([{
@@ -108,8 +115,8 @@ reportForm.addEventListener('submit', async (e) => {
             location,
             contact_info: contact,
             'img-url': imageUrl,
-            type: status,        
-            status: 'pending',  
+            type: status,        // 'lost' or 'found' — from the radio button
+            status: 'pending',   // admin approval workflow
             user_id: user.id
         }]);
 

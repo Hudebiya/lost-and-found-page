@@ -5,7 +5,8 @@ const logoutBtn = document.getElementById('logoutBtn');
 const filterBtns = document.querySelectorAll('.filter-btn');
 
 let currentUser = null;
-let allItems = [];
+let allItems = [];   // public approved/resolved items
+let myItems = [];    // logged-in user's own items (any status)
 let currentFilter = 'all';
 
 // ==========================================================
@@ -34,13 +35,13 @@ logoutBtn.addEventListener('click', async () => {
 });
 
 // ==========================================================
-// LOAD ITEMS (only approved ones: lost, found, resolved — not pending)
+// LOAD ITEMS (public approved/resolved items)
 // ==========================================================
 async function loadItems() {
     const { data, error } = await supabaseClient
         .from('items')
         .select('*')
-        .in('status',['approved', 'resolved'])
+        .in('status', ['approved', 'resolved'])
         .order('created_at', { ascending: false });
 
     if (error) {
@@ -53,15 +54,39 @@ async function loadItems() {
 }
 
 // ==========================================================
+// LOAD "MY REPORTS" (all of the logged-in user's own items, any status)
+// ==========================================================
+async function loadMyItems() {
+    const { data, error } = await supabaseClient
+        .from('items')
+        .select('*')
+        .eq('user_id', currentUser.id)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        itemsGrid.innerHTML = `<p class="loading-text">Failed to load your reports: ${error.message}</p>`;
+        return;
+    }
+
+    myItems = data;
+    renderItems();
+}
+
+// ==========================================================
 // RENDER ITEMS (respects current filter)
 // ==========================================================
-// RENDER ITEMS block — filter aur badge logic type/status dono use karega
 function renderItems() {
-    const filtered = currentFilter === 'all'
-        ? allItems
-        : currentFilter === 'resolved'
-            ? allItems.filter(item => item.status === 'resolved')
-            : allItems.filter(item => item.type === currentFilter && item.status !== 'resolved');
+    let filtered;
+
+    if (currentFilter === 'mine') {
+        filtered = myItems;
+    } else if (currentFilter === 'all') {
+        filtered = allItems;
+    } else if (currentFilter === 'resolved') {
+        filtered = allItems.filter(item => item.status === 'resolved');
+    } else {
+        filtered = allItems.filter(item => item.type === currentFilter && item.status !== 'resolved');
+    }
 
     if (filtered.length === 0) {
         itemsGrid.innerHTML = `<p class="loading-text">No items found.</p>`;
@@ -70,9 +95,20 @@ function renderItems() {
 
     itemsGrid.innerHTML = filtered.map(item => {
         const isOwner = currentUser && item.user_id === currentUser.id;
-        const canResolve = isOwner && item.status !== 'resolved';
-        const badgeClass = item.status === 'resolved' ? 'resolved' : item.type;
-        const badgeText = item.status === 'resolved' ? 'resolved' : item.type;
+        const canResolve = isOwner && item.status === 'approved';
+
+        // Badge: pending / resolved / lost / found
+        let badgeClass, badgeText;
+        if (item.status === 'pending') {
+            badgeClass = 'pending';
+            badgeText = 'pending review';
+        } else if (item.status === 'resolved') {
+            badgeClass = 'resolved';
+            badgeText = 'resolved';
+        } else {
+            badgeClass = item.type;
+            badgeText = item.type;
+        }
 
         return `
             <div class="item-card">
@@ -119,6 +155,7 @@ async function markResolved(itemId, btn) {
 
     Swal.fire('Done!', 'Item marked as resolved.', 'success');
     loadItems();
+    if (currentFilter === 'mine') loadMyItems();
 }
 
 // ==========================================================
@@ -129,7 +166,13 @@ filterBtns.forEach(btn => {
         filterBtns.forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentFilter = btn.dataset.filter;
-        renderItems();
+
+        if (currentFilter === 'mine') {
+            itemsGrid.innerHTML = `<p class="loading-text"><i class="fas fa-spinner fa-spin"></i> Loading...</p>`;
+            loadMyItems();
+        } else {
+            renderItems();
+        }
     });
 });
 
